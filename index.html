@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO / EEAT Meta Tags -->
+  <title>Solo Staking — Requirements, Setup, Validator Clients, Rewards &amp; Safety (2026)</title>
+  <meta name="description" content="Solo staking guide (2026): how to run your own validator, hardware and ETH requirements, client selection, key management, MEV-boost, slashing risks, APY vs APR, step-by-step setup, best practices, safety checklist, and troubleshooting. Includes KPIs, runbook, and a deep FAQ.">
+  <meta name="author" content="Crypto Finance Experts">
+  <link rel="canonical" href="https://lido-solo-staking.example.com/">
+
+  <link rel="icon" type="image/png" href="lido.staking.logo.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://lido-solo-staking.example.com/">
+  <meta property="og:title" content="Solo Staking — Requirements, Setup, Validator Clients, Rewards &amp; Safety (2026)">
+  <meta property="og:description" content="Practical solo staking guide: 32 ETH requirement, hardware setup, client selection, key management, slashing risks, MEV-boost, and troubleshooting.">
+  <meta property="og:image" content="cover.png">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://lido-solo-staking.example.com/">
+  <meta property="twitter:title" content="Solo Staking — Requirements, Setup, Validator Clients &amp; Safety (2026)">
+  <meta property="twitter:description" content="How to run your own validator: hardware, 32 ETH requirement, client selection, key management, slashing, and MEV-boost in 2025–2026.">
+  <meta property="twitter:image" content="cover.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Solo Staking — Requirements, Setup, Validator Clients, Rewards & Safety (2026)",
+    "description": "Comprehensive guide to solo staking: 32 ETH requirement, hardware specs, validator client selection, key management, slashing conditions, MEV-boost, and troubleshooting.",
+    "author": { "@type": "Organization", "name": "Crypto Finance Experts" },
+    "publisher": { "@type": "Organization", "name": "Crypto Finance Experts" },
+    "datePublished": "2026-01-01",
+    "dateModified": "2026-03-01"
+  }
+  </script>
+
+  <style>
+    :root{
+      /* Crimson–Red Theme */
+      --primary:#DC2626;
+      --primary-600:#B91C1C;
+      --primary-700:#991B1B;
+      --accent:#FCA5A5;
+
+      --ink:#FFF5F5;
+      --muted:#A1A1AA;
+      --muted-2:#71717A;
+
+      --bg:#0A0202;
+      --panel:#140404;
+      --panel-2:#1A0505;
+      --line:rgba(255,255,255,.08);
+
+      --ok:#34D399;
+      --warn:#F59E0B;
+      --error:#F87171;
+
+      --shadow:0 12px 32px rgba(0,0,0,.55);
+      --radius:14px;
+      --radius-sm:10px;
+      --radius-lg:20px;
+      --gap:1.25rem;
+      --gap-lg:2rem;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--muted);
+      background:var(--bg);
+      line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    a{color:var(--primary);text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;height:auto;display:block}
+    .container{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+
+    h1,h2,h3,h4{color:var(--ink);line-height:1.25;margin:0 0 .6rem}
+    h1{
+      font-size:clamp(2rem,4.5vw,3.1rem);
+      font-weight:800;
+      letter-spacing:-.2px;
+    }
+    h2{
+      font-size:clamp(1.35rem,2.8vw,2rem);
+      margin-top:2.2rem;
+      padding-top:.6rem;
+      border-top:1px solid var(--line);
+    }
+    h3{font-size:clamp(1.05rem,2.2vw,1.3rem);color:#FECACA}
+
+    p,li,td,th{font-size:1rem}
+    .lead{font-size:1.125rem;color:#FEE2E2}
+    .muted{color:var(--muted)}
+    .muted-2{color:var(--muted-2)}
+
+    header.hero{
+      padding:clamp(2rem,6vw,4rem) 0;
+      border-bottom:1px solid var(--line);
+    }
+    .hero-grid{
+      display:grid;
+      gap:var(--gap-lg);
+      grid-template-columns:1fr;
+      align-items:stretch;
+    }
+    .hero-card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      padding:clamp(1rem,3vw,1.75rem);
+      box-shadow:var(--shadow);
+    }
+
+    .brand-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.75rem}
+    .brand-logo{
+      width:54px;height:54px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(220,38,38,.08);
+      padding:.35rem;
+      object-fit:contain;
+      box-shadow:0 6px 16px rgba(0,0,0,.30);
+      flex:0 0 auto;
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      background:var(--primary);
+      color:#fff;
+      padding:1rem 2.5rem;
+      border-radius:12px;
+      font-weight:800;
+      font-size:1.05rem;
+      letter-spacing:.2px;
+      box-shadow:0 10px 28px rgba(220,38,38,.32);
+      border:1px solid rgba(255,255,255,.10);
+      transition:background .18s,transform .18s,box-shadow .18s;
+    }
+    .cta:hover{background:var(--primary-600);transform:translateY(-2px);box-shadow:0 16px 36px rgba(220,38,38,.44);text-decoration:none}
+
+    .note{
+      border-left:2px solid var(--primary);
+      padding:.75rem 1rem;
+      background:rgba(220,38,38,.07);
+      border-radius:0 10px 10px 0;
+      color:#FEE2E2;
+    }
+
+    section.step-guide{padding:clamp(2rem,6vw,3.5rem) 0}
+    .steps{display:grid;gap:var(--gap);grid-template-columns:1fr}
+    .step{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:1.2rem;
+      box-shadow:0 8px 20px rgba(0,0,0,.35);
+      transition:transform .2s ease,border-color .2s ease;
+    }
+    .step:hover{transform:translateY(-3px);border-color:rgba(220,38,38,.28)}
+    .step .icon{
+      width:48px;height:48px;border-radius:10px;
+      display:inline-grid;place-items:center;
+      background:rgba(220,38,38,.12);
+      margin-bottom:.6rem;
+      color:#FECACA;
+      font-weight:900;
+      border:1px solid rgba(220,38,38,.18);
+    }
+
+    main .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:1.25rem;
+      margin:1.25rem 0;
+      box-shadow:0 8px 20px rgba(0,0,0,.35);
+    }
+
+    .grid-2{display:grid;gap:var(--gap);grid-template-columns:1fr}
+    .pillbar{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 0}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(220,38,38,.07);
+      padding:.4rem .65rem;
+      border-radius:999px;
+      font-weight:700;
+      color:#FECACA;
+    }
+
+    .toc{
+      border:1px solid var(--line);
+      background:rgba(220,38,38,.04);
+      border-radius:var(--radius);
+      padding:1rem;
+    }
+    .toc strong{color:var(--ink)}
+    .toc ul{margin:.5rem 0 0;padding-left:1.1rem}
+    .toc li{margin:.25rem 0}
+    .toc a{font-weight:700}
+
+    table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px}
+    th,td{padding:.9rem;border-bottom:1px solid var(--line)}
+    th{background:rgba(220,38,38,.09);color:var(--ink);text-align:left}
+    tr.highlight{background:rgba(220,38,38,.05)}
+    tr:hover{background:rgba(255,255,255,.02)}
+
+    .ok{color:var(--ok)}.warn{color:var(--warn)}.err{color:var(--error)}
+
+    .eeat{
+      background:rgba(220,38,38,.04);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:1.25rem;
+      box-shadow:0 8px 20px rgba(0,0,0,.35);
+    }
+
+    .faq-item{border-bottom:1px solid var(--line);padding:.9rem 0}
+    .faq-button{
+      all:unset;display:flex;justify-content:space-between;align-items:center;
+      width:100%;cursor:pointer;padding:.3rem 0;
+    }
+    .faq-button:focus-visible{outline:2px solid var(--primary)}
+    .faq-button h3{margin:0;font-weight:800}
+    .faq-content{max-height:0;overflow:hidden;transition:max-height .25s ease}
+    .faq-content.open{padding-top:.6rem}
+    .faq-plus{font-weight:900;color:var(--primary);font-size:1.2rem}
+
+    .cta-center{
+      display:flex;
+      justify-content:center;
+      margin-top:1.25rem;
+    }
+
+    .badge-row{display:flex;flex-wrap:wrap;gap:.6rem;margin:.9rem 0 0}
+    .badge{
+      border:1px solid rgba(252,165,165,.20);
+      background:rgba(252,165,165,.06);
+      padding:.35rem .6rem;
+      border-radius:999px;
+      font-weight:800;
+      color:#FECACA;
+    }
+
+    .callout-grid{
+      display:grid;gap:var(--gap);
+      grid-template-columns:1fr;
+      margin-top:.75rem;
+    }
+    .mini{
+      background:rgba(255,255,255,.025);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:1rem;
+    }
+    .mini h3{margin-bottom:.35rem}
+    .kpi-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.5rem}
+    .kpi-badges span{
+      border:1px solid rgba(220,38,38,.22);
+      background:rgba(220,38,38,.08);
+      color:#FECACA;
+      padding:.3rem .55rem;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.9rem;
+    }
+
+    .src{
+      display:inline-flex;align-items:center;gap:.2rem;
+      font-size:.78rem;font-weight:700;
+      color:var(--primary);
+      border:1px solid rgba(220,38,38,.24);
+      background:rgba(220,38,38,.07);
+      border-radius:5px;padding:.1rem .4rem;
+      vertical-align:middle;white-space:nowrap;
+    }
+    .src:hover{background:rgba(220,38,38,.16);text-decoration:none}
+    .src::before{content:'↗ ';font-size:.7rem;opacity:.7}
+
+    /* hardware spec cards */
+    .spec-grid{
+      display:grid;gap:.75rem;
+      grid-template-columns:1fr;
+      margin-top:.75rem;
+    }
+    .spec-card{
+      border:1px solid var(--line);
+      background:rgba(220,38,38,.04);
+      border-radius:var(--radius);
+      padding:1rem;
+    }
+    .spec-card h3{font-size:.95rem;margin-bottom:.4rem}
+    .spec-card p{font-size:.875rem;margin:0;color:var(--muted)}
+    .spec-label{
+      display:inline-block;
+      font-size:.75rem;font-weight:800;
+      color:#FECACA;
+      background:rgba(220,38,38,.12);
+      border:1px solid rgba(220,38,38,.20);
+      border-radius:4px;
+      padding:.15rem .45rem;
+      margin-bottom:.4rem;
+    }
+
+    @media(min-width:860px){
+      .steps{grid-template-columns:repeat(4,1fr)}
+      .grid-2{grid-template-columns:1fr 1fr}
+      .callout-grid{grid-template-columns:1fr 1fr}
+      .spec-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero" role="banner">
+  <div class="container hero-grid">
+    <div class="hero-card" aria-label="Intro">
+      <div class="brand-row">
+        <img class="brand-logo" src="lido.staking.logo.png" alt="Lido Staking logo">
+        <div>
+          <div class="muted" style="font-weight:800;letter-spacing:.2px;">Operational Guide</div>
+          <div class="muted-2" style="font-size:.95rem;">32 ETH Requirement&nbsp;•&nbsp;Hardware&nbsp;•&nbsp;Clients&nbsp;•&nbsp;Key Management&nbsp;•&nbsp;Slashing</div>
+        </div>
+      </div>
+
+      <h1>Solo Staking</h1>
+      <p class="lead">
+        A practical, technically detailed guide to running your own Ethereum validator:
+        the 32 ETH requirement, hardware specifications, choosing a client pair,
+        key generation and security, MEV-boost configuration, slashing conditions,
+        and how to operate a validator safely over the long term.
+      </p>
+
+      <div class="cta-center">
+        <a href="https://lido-staking.net/" class="cta" target="_blank" rel="noopener" aria-label="Explore staking options with Lido">
+          Explore Staking Options &nbsp;→
+        </a>
+      </div>
+
+      <div class="note" style="margin-top:1.25rem;">
+        <strong>Core rule:</strong> Solo staking is the most trustless and decentralisation-preserving
+        way to participate in Ethereum consensus — but it is also the most operationally demanding.
+        You are responsible for uptime, key security, and correct client configuration.
+        Mistakes can result in slashing penalties or missed rewards. Read before running.
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="step-guide" aria-labelledby="how-works">
+  <div class="container">
+    <h2 id="how-works">How Solo Validation Works: End-to-End Workflow (Prepare → Generate → Launch → Maintain)</h2>
+    <div class="steps" role="list">
+      <article class="step" role="listitem">
+        <div class="icon">①</div>
+        <h3>Prepare: meet requirements</h3>
+        <p>
+          32 ETH per validator, dedicated hardware meeting minimum specs, a stable internet
+          connection, and a clear understanding of the operational commitment before
+          generating any keys or making any deposits.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">②</div>
+        <h3>Generate keys and deposit</h3>
+        <p>
+          Use the official Ethereum Staking Launchpad to generate validator keys offline,
+          store the mnemonic securely, and make the 32 ETH deposit transaction.
+          Never generate keys on an internet-connected machine.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">③</div>
+        <h3>Run execution + consensus clients</h3>
+        <p>
+          Solo staking requires two software clients: an execution client (processes transactions)
+          and a consensus client (handles PoS duties). Choose a minority client pair to
+          support network health and reduce correlated slashing risk.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">④</div>
+        <h3>Monitor, maintain, and upgrade</h3>
+        <p>
+          Validators must remain online and up-to-date. Missed attestations reduce yield;
+          downtime during finality events increases penalties. Client updates are mandatory
+          and time-sensitive — plan a maintenance routine before going live.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<main class="container" role="main">
+
+  <section class="card toc" aria-label="Table of Contents">
+    <strong>On this page (Solo Staking):</strong>
+    <ul>
+      <li><a href="#overview">Overview — what it is and who it's for</a></li>
+      <li><a href="#requirements">Requirements: ETH, hardware, and time commitment</a></li>
+      <li><a href="#rewards">Rewards: APY/APR, MEV-boost, and real yield</a></li>
+      <li><a href="#apy-apr">APY / APR: how to read the numbers correctly</a></li>
+      <li><a href="#how-to">How to set up a validator: step-by-step tutorial</a></li>
+      <li><a href="#calculator">Calculator: net yield estimation framework</a></li>
+      <li><a href="#clients">Client selection: execution + consensus pairs</a></li>
+      <li><a href="#keys">Key management and withdrawal credentials</a></li>
+      <li><a href="#review">Review: legitimacy, trust signals, and what to watch</a></li>
+      <li><a href="#safety">Slashing: causes, consequences, and prevention</a></li>
+      <li><a href="#comparison">Comparison: solo staking vs liquid staking</a></li>
+      <li><a href="#best-practices">Best practices: high-impact operational rules</a></li>
+      <li><a href="#troubleshooting">Troubleshooting and common issues</a></li>
+      <li><a href="#eeat">Sources and references</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </section>
+
+  <section class="card" id="overview">
+    <h2>Overview: What Running Your Own Validator Means</h2>
+    <p>
+      Solo staking is the process of running your own Ethereum validator node — committing 32 ETH
+      directly to the Beacon Chain and operating the software required to participate in consensus.
+      It is the most decentralisation-preserving staking method available: your keys never leave
+      your control, you have no counterparty, and you contribute directly to Ethereum's validator
+      diversity and censorship resistance.
+    </p>
+
+    <div class="pillbar" aria-label="Key topics">
+      <span class="pill">32 ETH Requirement</span>
+      <span class="pill">Validator Clients</span>
+      <span class="pill">Key Security</span>
+      <span class="pill">MEV-Boost</span>
+      <span class="pill">Slashing Risk</span>
+      <span class="pill">Client Diversity</span>
+    </div>
+
+    <div class="callout-grid" role="list">
+      <div class="mini" role="listitem">
+        <h3>Who this is right for</h3>
+        <p class="muted">
+          Technically capable operators with 32 ETH, the willingness to maintain a dedicated
+          machine with high availability, and a genuine interest in contributing to Ethereum's
+          decentralisation. The community resource
+          <a href="https://ethstaker.cc/" target="_blank" rel="noopener nofollow" class="src">EthStaker</a>
+          is the best starting point for new solo stakers.
+        </p>
+        <div class="kpi-badges">
+          <span>Technical operators</span><span>32 ETH minimum</span><span>High-availability setup</span>
+        </div>
+      </div>
+      <div class="mini" role="listitem">
+        <h3>What it demands</h3>
+        <p class="muted">
+          Continuous uptime (missed attestations reduce yield), timely client updates
+          (critical updates are time-sensitive), secure key storage, and a maintenance
+          routine for hardware, software, and monitoring. This is an operational
+          commitment — not a passive yield source.
+        </p>
+        <div class="kpi-badges">
+          <span>Continuous uptime</span><span>Client updates</span><span>Key security</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>Honest assessment:</strong> For most token holders, liquid staking via an audited protocol
+      (like Lido) delivers equivalent yield with dramatically lower operational complexity and no
+      minimum balance requirement. Solo staking makes the most sense for operators who specifically
+      want to contribute to Ethereum's validator diversity — not as the default yield-maximization strategy.
+    </div>
+  </section>
+
+  <section class="card" id="requirements">
+    <h2>Requirements: ETH, Hardware, Connectivity, and Time</h2>
+    <p>
+      Meeting the requirements is not optional — shortfalls in any dimension create real penalties.
+      The official entry point for all new solo stakers is the
+      <a href="https://launchpad.ethereum.org/" target="_blank" rel="noopener nofollow" class="src">Ethereum Staking Launchpad</a>,
+      which includes the most current hardware and software guidance.
+    </p>
+
+    <div class="spec-grid" role="list">
+      <div class="spec-card" role="listitem">
+        <span class="spec-label">ETH</span>
+        <h3>32 ETH per validator</h3>
+        <p>Exactly 32 ETH is required for each validator activation. Additional ETH above 32 does not increase rewards — it simply exceeds the effective balance cap. Multiple validators require 32 ETH each.</p>
+      </div>
+      <div class="spec-card" role="listitem">
+        <span class="spec-label">Hardware</span>
+        <h3>Dedicated machine</h3>
+        <p>Minimum: 16 GB RAM, 2 TB+ NVMe SSD (fast read/write essential for the execution layer), 4-core CPU, stable power supply with UPS recommended. Do not use shared or virtualized environments for production validators.</p>
+      </div>
+      <div class="spec-card" role="listitem">
+        <span class="spec-label">Connectivity</span>
+        <h3>Stable broadband</h3>
+        <p>Minimum: 10 Mbps symmetric, low latency. Fiber is strongly preferred. Mobile or satellite connections introduce latency that increases missed attestations. A static IP or reliable DDNS is recommended for peer connectivity.</p>
+      </div>
+      <div class="spec-card" role="listitem">
+        <span class="spec-label">Storage</span>
+        <h3>Fast NVMe SSD</h3>
+        <p>The execution client (full archive or pruned state) requires fast random I/O. HDDs are not suitable — IOPS performance directly affects attestation timing and therefore rewards. Plan for storage growth; the chain grows continuously.</p>
+      </div>
+      <div class="spec-card" role="listitem">
+        <span class="spec-label">Time</span>
+        <h3>Ongoing operational commitment</h3>
+        <p>Client updates typically require 15–60 minutes of maintenance per release. Critical security updates may need same-day response. Factor in monitoring, hardware maintenance, and incident response time before committing.</p>
+      </div>
+      <div class="spec-card" role="listitem">
+        <span class="spec-label">Knowledge</span>
+        <h3>Linux / CLI proficiency</h3>
+        <p>Most validator setups run on Linux and require comfort with the command line for client management, log inspection, and updates. Tools like Stereum and DAppNode lower the technical barrier with GUI frontends, but CLI knowledge remains important for troubleshooting.</p>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:.75rem;">
+      <strong>Before generating any keys:</strong> complete the Ethereum Staking Launchpad checklist in full.
+      The launchpad is not just a deposit interface — it is a structured orientation to the operational
+      responsibilities and risks you are accepting.
+    </div>
+  </section>
+
+  <section class="card" id="rewards">
+    <h2>Rewards: APY/APR, MEV-Boost, and What Drives Real Yield</h2>
+    <p>
+      Solo staker rewards come from three sources with distinct characteristics.
+      Live reward rate data is published by
+      <a href="https://beaconcha.in/" target="_blank" rel="noopener nofollow" class="src">Beaconcha.in</a>
+      and independently tracked by
+      <a href="https://ethereum.org/en/staking/solo/" target="_blank" rel="noopener nofollow" class="src">Ethereum.org solo staking</a>.
+    </p>
+    <ul>
+      <li><strong>Attestation rewards:</strong> the bulk of validator income — earned for correctly and promptly attesting to the head of the chain each epoch. Timely attestations maximize yield; late or missing ones reduce it proportionally.</li>
+      <li><strong>Block proposal rewards:</strong> validators are pseudorandomly selected to propose blocks. Frequency is roughly 1 block per 2 months per validator at current validator set sizes. Block proposals include both consensus rewards and execution fees.</li>
+      <li><strong>MEV-boost rewards:</strong> by connecting to a MEV relay, validators can receive bids from block builders that often significantly exceed the base execution fee. MEV is variable — some blocks include large MEV, most do not. Over time MEV adds approximately 0.5–1.5% APR for validators running MEV-boost.</li>
+      <li><strong>Sync committee rewards:</strong> validators are occasionally selected for sync committee duty (~every 22 months per validator). Sync committee participation pays significantly above the normal attestation rate for the ~27 hours of duty.</li>
+    </ul>
+
+    <div class="badge-row">
+      <span class="badge">Attestation Rewards</span>
+      <span class="badge">Block Proposals</span>
+      <span class="badge">MEV-Boost</span>
+      <span class="badge">Sync Committee</span>
+    </div>
+
+    <div class="note" style="margin-top:.75rem;">
+      <strong>Current yield range:</strong> Solo stakers on Ethereum with MEV-boost enabled typically
+      earn 3.5–5% APR depending on MEV environment and validator count.
+      Without MEV-boost, the range is approximately 3–4% APR.
+      Verify current rates at <a href="https://beaconcha.in/" target="_blank" rel="noopener nofollow" class="src">Beaconcha.in</a>.
+    </div>
+  </section>
+
+  <section class="card" id="apy-apr">
+    <h2>APY / APR: How to Read Solo Staking Yield Correctly</h2>
+    <p>
+      For solo stakers, the APY/APR distinction matters differently than for liquid staking —
+      there is no protocol fee, but compounding requires manual withdrawal and restaking
+      (which at 32 ETH per validator means waiting for the effective balance cap logic or
+      activating additional validators).
+    </p>
+
+    <table aria-label="APY vs APR for solo staking">
+      <thead>
+        <tr><th>Term</th><th>Solo staking context</th><th>Practical implication</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>APR</td>
+          <td>Base protocol rate before MEV — the honest baseline</td>
+          <td>Most reliable comparison metric; approximately 3–4% for ETH in 2026</td>
+        </tr>
+        <tr>
+          <td>APY (with MEV-boost)</td>
+          <td>APR plus variable MEV income</td>
+          <td>Meaningful uplift (~0.5–1.5%) but highly variable — do not plan around peak MEV</td>
+        </tr>
+        <tr class="highlight">
+          <td>Net yield</td>
+          <td>APR + MEV minus hardware/electricity costs</td>
+          <td>For small validator counts, infrastructure costs materially reduce net return</td>
+        </tr>
+        <tr>
+          <td>Real yield</td>
+          <td>USD-adjusted return after ETH price movement</td>
+          <td>The dominant variable for most operators — ETH price dwarfs the 3–4% base rate</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Infrastructure cost reality:</strong> A dedicated machine running 24/7 costs approximately
+      $10–30/month in electricity depending on hardware efficiency and local rates.
+      For a single 32 ETH validator at current rates, this represents roughly 1–3% of annual gross rewards —
+      a material drag that liquid staking eliminates entirely.
+    </div>
+  </section>
+
+  <section class="card" id="how-to">
+    <h2>How to Set Up a Validator: Step-by-Step Tutorial</h2>
+    <ol>
+      <li><strong>Read the Launchpad in full before anything else:</strong> the
+        <a href="https://launchpad.ethereum.org/" target="_blank" rel="noopener nofollow" class="src">Ethereum Staking Launchpad</a>
+        is the official entry point. Complete its checklist. Do not skip steps.</li>
+      <li><strong>Provision and configure hardware:</strong> install a clean Linux OS (Ubuntu LTS is widely supported). Configure firewall rules, SSH hardening, and automatic security updates.</li>
+      <li><strong>Choose and sync your execution client:</strong> select a minority client — Besu, Erigon, or Nethermind — and begin syncing. Full sync takes 1–3 days depending on hardware. See <a href="https://clientdiversity.org/" target="_blank" rel="noopener nofollow" class="src">clientdiversity.org</a> for current market share data.</li>
+      <li><strong>Choose and sync your consensus client:</strong> select a minority consensus client — Teku, Nimbus, or Lodestar. Pair it with your execution client via the Engine API. Lighthouse and Prysm have the highest market share — avoid them if you want to support client diversity.</li>
+      <li><strong>Generate validator keys offline:</strong> use an air-gapped machine. Download the official staking-deposit-cli from the Ethereum Foundation GitHub, verify the checksum, and generate your keys completely offline. Store the mnemonic phrase in offline, physical, and redundant storage.</li>
+      <li><strong>Import validator keys to your consensus client:</strong> follow the client's documented import procedure. Set your fee recipient address for execution layer rewards.</li>
+      <li><strong>Configure MEV-boost (optional but recommended):</strong> connect to one or more MEV relays to capture block builder bids. Review relay policies for censorship behaviour before selecting.</li>
+      <li><strong>Make the 32 ETH deposit:</strong> use the Launchpad deposit interface. Verify the deposit contract address matches the official Ethereum Foundation published address before signing.</li>
+      <li><strong>Monitor the activation queue:</strong> after deposit, validators enter an activation queue. Wait time varies with validator set growth — check current wait at <a href="https://beaconcha.in/" target="_blank" rel="noopener nofollow" class="src">Beaconcha.in</a>.</li>
+      <li><strong>Set up monitoring and alerting:</strong> configure Prometheus + Grafana dashboards, and set up alerts for missed attestations, low peer count, and client errors.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Key principle:</strong> Solo staking is not a one-time setup — it is an ongoing operational
+      commitment. Client updates, hardware maintenance, and monitoring are permanent responsibilities.
+      The EthStaker community at
+      <a href="https://ethstaker.cc/" target="_blank" rel="noopener nofollow" class="src">ethstaker.cc</a>
+      is the best resource for ongoing support and guidance.
+    </div>
+  </section>
+
+  <section class="card" id="calculator">
+    <h2>Calculator: Net Yield Estimation Framework for Solo Validators</h2>
+    <p>
+      Solo staking has a different cost structure than liquid staking — no protocol fee,
+      but real infrastructure costs that must be included for an honest net yield calculation.
+    </p>
+
+    <table aria-label="Solo staking calculator inputs">
+      <thead>
+        <tr><th>Input</th><th>Meaning</th><th>Why it matters</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Validator count × 32 ETH</td>
+          <td>Total ETH at stake</td>
+          <td>Determines absolute rewards; infrastructure costs are largely fixed regardless of count</td>
+        </tr>
+        <tr>
+          <td>Base APR</td>
+          <td>Protocol consensus + attestation rate</td>
+          <td>Approximately 3–4% in 2026 — verify current rate at Beaconcha.in</td>
+        </tr>
+        <tr class="highlight">
+          <td>MEV-boost APR uplift</td>
+          <td>Additional yield from MEV relay bids</td>
+          <td>Variable ~0.5–1.5%; improves average yield but highly lumpy — do not rely on peaks</td>
+        </tr>
+        <tr>
+          <td>Attestation effectiveness %</td>
+          <td>Percentage of attestations submitted correctly and on time</td>
+          <td>Below 95% starts to materially reduce yield; below 80% is a serious operational failure</td>
+        </tr>
+        <tr class="highlight">
+          <td>Infrastructure cost ($/month)</td>
+          <td>Hardware depreciation + electricity</td>
+          <td>$10–30/month for a single home validator — represents 1–3% of annual gross rewards</td>
+        </tr>
+        <tr>
+          <td>ETH USD price assumption</td>
+          <td>Expected price movement over holding period</td>
+          <td>The dominant variable in any USD-denominated return calculation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Example: 1 validator (32 ETH) with MEV-boost</h3>
+        <p class="muted">Gross APR ~4.5% (base ~3.5% + MEV ~1%). Infrastructure: ~$20/month. At $3,000 ETH price: gross ~$4,320/year, infrastructure ~$240/year, net ~$4,080/year ≈ 4.25% net. No protocol fee.</p>
+      </div>
+      <div class="mini">
+        <h3>Example: 1 validator vs Lido</h3>
+        <p class="muted">Lido: 3.6% net APR, zero infrastructure cost, zero operational overhead. Solo: ~4.25% net APR but requires 32 ETH minimum, dedicated hardware, and continuous maintenance. The yield premium over Lido is real but modest — ~0.65% APR.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Honest calculation:</strong> The net yield advantage of solo staking over liquid staking
+      is approximately 0.5–1% APR after infrastructure costs. For most operators, that premium
+      is justified by the decentralisation contribution, not the marginal yield improvement.
+    </div>
+  </section>
+
+  <section class="card" id="clients">
+    <h2>Client Selection: Why It Matters and How to Choose</h2>
+    <p>
+      Ethereum requires both an execution client and a consensus client running in parallel.
+      Your client choice has a direct impact on network health — and on your own slashing risk.
+      Current client market share is tracked at
+      <a href="https://clientdiversity.org/" target="_blank" rel="noopener nofollow" class="src">clientdiversity.org</a>.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Why minority clients matter</h3>
+        <p class="muted">
+          If a single client has more than 33% of the validator set and contains a bug,
+          it can cause widespread correlated slashing — affecting you and many others simultaneously.
+          Running a minority client reduces your correlated risk and supports network resilience.
+          <a href="https://clientdiversity.org/" target="_blank" rel="noopener nofollow" class="src">clientdiversity.org</a>
+          publishes real-time share data.
+        </p>
+      </div>
+      <div class="mini">
+        <h3>Current recommended minority pairs</h3>
+        <p class="muted">
+          <strong>Execution (minority):</strong> Besu, Erigon, or Nethermind — avoid Geth (majority).
+          <strong>Consensus (minority):</strong> Teku, Nimbus, or Lodestar — avoid Prysm and Lighthouse
+          (which together hold the majority share).
+          Check current share percentages before choosing.
+        </p>
+      </div>
+    </div>
+
+    <table aria-label="Validator client overview" style="margin-top:.75rem;">
+      <thead>
+        <tr><th>Client</th><th>Layer</th><th>Language</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td><a href="https://besu.hyperledger.org/" target="_blank" rel="noopener nofollow">Besu</a></td>
+          <td>Execution</td>
+          <td>Java</td>
+          <td>Enterprise-grade, strong monitoring support — good minority choice</td>
+        </tr>
+        <tr>
+          <td>Nethermind</td>
+          <td>Execution</td>
+          <td>.NET</td>
+          <td>Feature-rich, widely used — growing minority share</td>
+        </tr>
+        <tr class="highlight">
+          <td>Erigon</td>
+          <td>Execution</td>
+          <td>Go</td>
+          <td>Optimised for storage efficiency; advanced users</td>
+        </tr>
+        <tr>
+          <td>Teku</td>
+          <td>Consensus</td>
+          <td>Java</td>
+          <td>Enterprise-grade, detailed slashing protection — strong minority choice.
+            <a href="https://docs.teku.consensys.io/" target="_blank" rel="noopener nofollow" class="src">Teku docs</a></td>
+        </tr>
+        <tr class="highlight">
+          <td>Nimbus</td>
+          <td>Consensus</td>
+          <td>Nim</td>
+          <td>Lightweight — suited to Raspberry Pi and resource-constrained hardware</td>
+        </tr>
+        <tr>
+          <td>Lodestar</td>
+          <td>Consensus</td>
+          <td>TypeScript</td>
+          <td>Only TypeScript client; important for client diversity</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Client diversity is a network security property — not a preference.</strong>
+      Every validator that chooses a minority client strengthens Ethereum's resilience.
+      The EthStaker community at
+      <a href="https://ethstaker.cc/" target="_blank" rel="noopener nofollow" class="src">ethstaker.cc</a>
+      maintains up-to-date setup guides for all minority clients.
+    </div>
+  </section>
+
+  <section class="card" id="keys">
+    <h2>Key Management and Withdrawal Credentials</h2>
+    <p>
+      Ethereum validators use two separate key types with different security profiles.
+      Understanding the distinction is essential — confusing them leads to unrecoverable errors.
+    </p>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>Validator signing key</h3>
+        <p class="muted">Used for every attestation and block proposal — must be loaded into the running validator client. This key operates online. If compromised, an attacker can slash your validator. Protect with strong host security; never export unnecessarily.</p>
+        <div class="kpi-badges"><span>Online key</span><span>Attestations</span><span>Slashing target</span></div>
+      </div>
+      <div class="mini">
+        <h3>Withdrawal / BLS credentials</h3>
+        <p class="muted">Controls where exited validator funds are sent. Should always be set to an Ethereum execution layer address (0x01 credentials) — not a BLS key (0x00). Keep this key offline and in cold storage. Never load it into any online system.</p>
+        <div class="kpi-badges"><span>Offline key</span><span>Fund withdrawal</span><span>Cold storage only</span></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:1rem;">Key security checklist</h3>
+    <ul>
+      <li>Generate all keys on an air-gapped, freshly installed machine — never on an internet-connected device.</li>
+      <li>Write the mnemonic on paper (or metal backup), store in multiple physically separate locations, and never photograph or digitize it.</li>
+      <li>Set withdrawal credentials to an 0x01 execution layer address you control before depositing.</li>
+      <li>Use a hardware wallet (Ledger, Trezor) as the withdrawal address for the highest level of key security.</li>
+      <li>Never run duplicate validator signing keys on two machines simultaneously — this is a guaranteed slashing condition.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Single most important rule:</strong> Never run the same validator signing key on two machines
+      simultaneously. This is called "double signing" and triggers an immediate, unrecoverable slashing penalty.
+      When migrating to new hardware, follow the client's documented migration procedure and allow
+      the slashing protection database to be transferred before starting the new instance.
+    </div>
+  </section>
+
+  <section class="card" id="review">
+    <h2>Legitimacy, Community Standards, and What to Watch (2025–2026)</h2>
+    <p>
+      Solo staking is permissionless — there is no protocol to evaluate for legitimacy.
+      What matters instead is the quality of the tooling you use for key generation,
+      the information sources you rely on, and the community practices you follow.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Trusted information sources</h3>
+        <p class="muted">
+          Use only official sources: the Ethereum Foundation's Staking Launchpad, official client documentation,
+          and the EthStaker community. Independent research is published at
+          <a href="https://ethereum.org/en/staking/solo/" target="_blank" rel="noopener nofollow" class="src">Ethereum.org solo staking</a>.
+          The EF's GitHub is the only authoritative source for the staking-deposit-cli binary.
+        </p>
+      </div>
+      <div class="mini">
+        <h3>Common social engineering threats</h3>
+        <p class="muted">
+          "Validator setup services" that ask for your mnemonic or signing keys — always a scam.
+          "MEV optimization" tools from unknown sources that request key access.
+          Impersonation of client developers or EthStaker community members offering "support."
+          Never share keys with any service, person, or tool.
+        </p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>2025/2026 specific threat:</strong> Malicious MEV relay software distributed
+      via unofficial channels that exfiltrates validator keys during setup.
+      Only use MEV-boost relay connections from the official
+      <a href="https://github.com/flashbots/mev-boost" target="_blank" rel="noopener nofollow" class="src">Flashbots MEV-boost repository</a>
+      and well-documented relay endpoints. Verify checksums for all downloaded binaries.
+    </div>
+  </section>
+
+  <section class="card" id="safety">
+    <h2>Slashing: Causes, Consequences, and Prevention</h2>
+    <p>
+      Slashing is the most severe penalty in the Ethereum validator system — it is partially irreversible
+      and results in a forced exit. Understanding exactly what causes it is the best prevention.
+    </p>
+
+    <table aria-label="Slashing causes and prevention">
+      <thead>
+        <tr><th>Cause</th><th>Mechanism</th><th>Prevention</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Double voting (equivocation)</td>
+          <td class="err">Signing two conflicting attestations for the same slot</td>
+          <td>Never run duplicate signing keys simultaneously. Follow migration procedure exactly.</td>
+        </tr>
+        <tr>
+          <td>Surround voting</td>
+          <td class="err">Signing an attestation that surrounds a previously signed one</td>
+          <td>Use a consensus client with a slashing protection database. Never delete the protection DB.</td>
+        </tr>
+        <tr class="highlight">
+          <td>Double block proposal</td>
+          <td class="err">Proposing two different blocks for the same slot</td>
+          <td>Same as double voting prevention — never run dual instances of the same key.</td>
+        </tr>
+        <tr>
+          <td>Compromised signing key</td>
+          <td class="err">Attacker causes equivocation remotely</td>
+          <td>Strong host security, offline key generation, minimal key exposure.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:1rem;">Slashing penalty structure</h3>
+    <ul>
+      <li><strong>Initial penalty:</strong> approximately 1/32 of effective balance (roughly 1 ETH for a 32 ETH validator) immediately upon detection.</li>
+      <li><strong>Correlation penalty:</strong> additional penalty proportional to the number of validators slashed in the same window — if many validators are slashed simultaneously (correlated bug), the penalty is much higher.</li>
+      <li><strong>Forced exit:</strong> slashed validators are removed from the active set after a ~36 day exit delay, during which inactivity penalties continue.</li>
+      <li><strong>Whistleblower reward:</strong> the validator that reports the slashable offense receives a small portion of the penalty as a reward.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Most important prevention:</strong> Never run two instances of the same validator signing key.
+      This single rule prevents the overwhelming majority of real-world slashing events.
+      When in doubt about whether a key is running elsewhere, wait. Do not start.
+    </div>
+  </section>
+
+  <section class="card" id="comparison">
+    <h2>Comparison: Solo Staking vs Liquid Staking</h2>
+    <p>
+      Both approaches earn ETH staking rewards, but through fundamentally different operational models.
+      The right choice depends on your ETH balance, technical capability, and reason for staking.
+    </p>
+
+    <table aria-label="Solo staking vs liquid staking comparison">
+      <thead>
+        <tr><th>Dimension</th><th>Solo staking</th><th>Liquid staking (e.g. Lido)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Minimum ETH</td>
+          <td class="err">32 ETH per validator</td>
+          <td class="ok">None — any ETH amount accepted</td>
+        </tr>
+        <tr>
+          <td>Custody</td>
+          <td class="ok">Full self-custody — keys never leave your control</td>
+          <td>Smart contract custody — assets in audited on-chain contracts</td>
+        </tr>
+        <tr class="highlight">
+          <td>Decentralisation contribution</td>
+          <td class="ok">Direct — you run a node, diversify the validator set</td>
+          <td>Indirect — Lido runs nodes; depends on operator set diversity</td>
+        </tr>
+        <tr>
+          <td>Net APR (2026)</td>
+          <td>~3.5–5% (with MEV-boost, after infra costs)</td>
+          <td>~3.6% net (no infra cost, no protocol maintenance)</td>
+        </tr>
+        <tr class="highlight">
+          <td>Operational demand</td>
+          <td class="err">High — 24/7 uptime, updates, monitoring</td>
+          <td class="ok">None — fully managed by protocol</td>
+        </tr>
+        <tr>
+          <td>Liquidity</td>
+          <td class="err">Illiquid — 32 ETH locked; 9-day+ exit queue</td>
+          <td class="ok">Liquid — stETH tradeable any time</td>
+        </tr>
+        <tr class="highlight">
+          <td>Slashing risk</td>
+          <td class="warn">Operator's full responsibility</td>
+          <td class="ok">Socialised across Lido's diversified operator set</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Decision rule:</strong> Solo staking is the right choice if you have 32+ ETH, the technical
+      capability to maintain a validator, and a genuine motivation to contribute to Ethereum's
+      decentralisation. For yield-maximization alone, the marginal APR advantage over liquid staking
+      (~0.5–1%) rarely justifies the operational overhead for most operators.
+    </div>
+  </section>
+
+  <section class="card" id="best-practices">
+    <h2>Best Practices: High-Impact Operational Rules for Validators</h2>
+    <ul>
+      <li><strong>Never run duplicate signing keys simultaneously.</strong> This is the single highest-impact slashing prevention rule. When migrating hardware, stop the old instance completely and transfer the slashing protection database before starting the new one.</li>
+      <li><strong>Choose a minority client pair</strong> for both execution and consensus layers. Check current market share at clientdiversity.org before choosing.</li>
+      <li><strong>Generate all keys offline</strong> on an air-gapped machine. Never generate keys on an internet-connected device.</li>
+      <li><strong>Set 0x01 withdrawal credentials</strong> (execution layer address) before depositing. BLS (0x00) credentials require an additional on-chain update transaction.</li>
+      <li><strong>Use a hardware wallet</strong> as your withdrawal address for maximum key security.</li>
+      <li><strong>Set up monitoring and alerting</strong> before your validator goes live — not after the first missed attestation.</li>
+      <li><strong>Subscribe to client security announcements</strong> for your chosen clients and respond to critical updates promptly. Critical updates can have same-day windows before network-wide impact.</li>
+      <li><strong>Keep a maintenance log</strong> of all updates, configuration changes, and incidents. This is invaluable for debugging and for the community if you need support.</li>
+      <li><strong>Use MEV-boost from official sources only</strong> and verify all relay endpoint configurations against published documentation.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Most common operational mistake:</strong> Panicking during maintenance and starting a new validator
+      instance before the old one is fully stopped and the slashing protection database is transferred.
+      If you are unsure whether a validator is still running, wait. Always wait.
+    </div>
+  </section>
+
+  <section class="card" id="troubleshooting">
+    <h2>Troubleshooting: Common Validator Issues, Root Causes, and Fixes</h2>
+
+    <h3>"Validator is missing attestations"</h3>
+    <ul>
+      <li>Check client logs for errors on both execution and consensus layers — the root cause is almost always a client-side issue, not a network issue.</li>
+      <li>Verify execution and consensus clients are in sync and connected to each other via the Engine API. A disconnected pair causes missed duties immediately.</li>
+      <li>Check disk I/O — slow NVMe or a nearly full disk causes attestation delays. Monitor with iostat.</li>
+      <li>Verify peer count — a consensus client with under 50 peers may have delayed block delivery affecting attestation timing.</li>
+    </ul>
+
+    <h3>"My validator appears offline on Beaconcha.in"</h3>
+    <ul>
+      <li>Beaconcha.in may lag — check your local client logs as the primary source of truth before assuming a problem.</li>
+      <li>If the client logs confirm errors: check that both clients are running, check disk space, and check network connectivity.</li>
+      <li>If the validator was recently migrated: verify the signing key is imported correctly in the new client and that the slashing protection database was transferred.</li>
+    </ul>
+
+    <h3>"I received a slashing notification"</h3>
+    <ul>
+      <li>Stop all validator instances immediately to prevent further penalties.</li>
+      <li>Do not restart until you have identified and resolved the root cause — most commonly a duplicate key instance.</li>
+      <li>Review client logs and the slashing protection database. Seek support from the EthStaker community with your non-sensitive log data.</li>
+      <li>Note: a slashed validator cannot be "un-slashed." Focus on minimising further inactivity penalties during the forced exit period.</li>
+    </ul>
+
+    <h3>"Client update failed or node won't sync after update"</h3>
+    <ul>
+      <li>Check the client's official release notes for any breaking changes or migration steps required.</li>
+      <li>Consult the client's official documentation and the EthStaker community Discord — most post-update issues are well-documented within hours of a release.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Best debugging approach:</strong> Always check local client logs first — external dashboards
+      (Beaconcha.in, Grafana) can lag or display cached state. Your local logs are always the most
+      current and authoritative source of validator state.
+    </div>
+  </section>
+
+  <section class="eeat" id="eeat" aria-labelledby="eeat-title">
+    <h2 id="eeat-title">Authoritative Notes &amp; External References</h2>
+    <p>
+      Primary sources used throughout this guide. All links point to official Ethereum Foundation
+      resources, official client documentation, client diversity initiatives, or established
+      community resources for solo validators.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <h3>Official Ethereum &amp; Staking Resources</h3>
+        <ul>
+          <li><a href="https://launchpad.ethereum.org/" target="_blank" rel="noopener nofollow">Ethereum Staking Launchpad — Official Validator Onboarding</a></li>
+          <li><a href="https://ethereum.org/en/staking/solo/" target="_blank" rel="noopener nofollow">Ethereum.org — Solo Staking Guide</a></li>
+          <li><a href="https://ethereum.org/en/staking/withdrawals/" target="_blank" rel="noopener nofollow">Ethereum.org — Validator Withdrawals</a></li>
+          <li><a href="https://beaconcha.in/" target="_blank" rel="noopener nofollow">Beaconcha.in — Beacon Chain Explorer &amp; Validator Stats</a></li>
+          <li><a href="https://clientdiversity.org/" target="_blank" rel="noopener nofollow">ClientDiversity.org — Real-Time Client Market Share</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Community, Clients &amp; Tools</h3>
+        <ul>
+          <li><a href="https://ethstaker.cc/" target="_blank" rel="noopener nofollow">EthStaker — Solo Staker Community &amp; Setup Guides</a></li>
+          <li><a href="https://docs.teku.consensys.io/" target="_blank" rel="noopener nofollow">Teku Docs — Consensus Client Documentation</a></li>
+          <li><a href="https://github.com/flashbots/mev-boost" target="_blank" rel="noopener nofollow">Flashbots MEV-Boost — Official Repository</a></li>
+          <li><a href="https://github.com/lidofinance/audits" target="_blank" rel="noopener nofollow">Lido — Smart Contract Audits (Reference)</a></li>
+          <li><a href="https://revoke.cash/" target="_blank" rel="noopener nofollow">Revoke.cash — Token Allowance Management</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>About:</strong> Prepared by Crypto Finance Experts as a practical SEO-oriented knowledge base covering
+      solo staking on Ethereum: 32 ETH requirement, hardware specs, client selection and diversity,
+      key management, slashing prevention, MEV-boost, APY/APR, and troubleshooting.
+    </div>
+  </section>
+
+  <section class="card faq-section" aria-labelledby="faq">
+    <h2 id="faq">Solo Staking: Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f1" id="b1">
+        <h3>What is solo staking and how does it work?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f1" class="faq-content" role="region" aria-labelledby="b1">
+        <p>Solo staking means running your own Ethereum validator node — depositing 32 ETH to the Beacon Chain and operating the execution and consensus client software required to participate in PoS consensus. You attest to blocks, occasionally propose blocks, and earn rewards for both. Your keys stay under your full control; there is no protocol intermediary or custodian.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f2" id="b2">
+        <h3>Why does solo staking require exactly 32 ETH?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f2" class="faq-content" role="region" aria-labelledby="b2">
+        <p>32 ETH is the effective balance cap set by Ethereum's protocol design. It is the minimum stake required to activate a validator and the maximum that earns base rewards. Depositing more than 32 ETH to a single validator does not increase rewards — it just sits above the effective balance cap. Multiple validators each require their own 32 ETH deposit.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f3" id="b3">
+        <h3>What APY or APR can a solo staker expect?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f3" class="faq-content" role="region" aria-labelledby="b3">
+        <p>Solo stakers on Ethereum earn approximately 3–4% APR from consensus rewards. With MEV-boost enabled, total APR typically ranges from 3.5–5% depending on the MEV environment — though MEV is highly variable and not evenly distributed. Infrastructure costs (electricity and hardware depreciation) reduce net yield by approximately 1–3% of gross rewards for a single validator setup.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f4" id="b4">
+        <h3>What causes slashing and how do I avoid it?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f4" class="faq-content" role="region" aria-labelledby="b4">
+        <p>Slashing is triggered by equivocation — signing two conflicting messages for the same slot. In practice, the overwhelming majority of real-world slashing events are caused by running duplicate signing keys on two machines simultaneously. The prevention is simple: never run two instances of the same validator key at the same time. When migrating hardware, stop the old instance completely, transfer the slashing protection database, and only then start the new instance.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f5" id="b5">
+        <h3>Which validator clients should I choose?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f5" class="faq-content" role="region" aria-labelledby="b5">
+        <p>Choose minority clients for both layers. For the execution layer: Besu, Nethermind, or Erigon (avoid Geth, which has majority share). For the consensus layer: Teku, Nimbus, or Lodestar (avoid Prysm and Lighthouse, which together hold majority share). Check current percentages at clientdiversity.org before making your choice — market share changes over time.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f6" id="b6">
+        <h3>What is MEV-boost and should I run it?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f6" class="faq-content" role="region" aria-labelledby="b6">
+        <p>MEV-boost is software that connects your validator to a network of block builders who bid for the right to have their blocks proposed. Running MEV-boost typically adds 0.5–1.5% APR on average, though the distribution is lumpy — most blocks have minimal MEV and occasional blocks have very high MEV. It is generally recommended for solo stakers, but only use the official Flashbots MEV-boost software from the official repository, and review relay censorship policies before connecting.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f7" id="b7">
+        <h3>How do I withdraw my staked ETH?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f7" class="faq-content" role="region" aria-labelledby="b7">
+        <p>Validator withdrawals work in two ways: partial withdrawals (excess balance above 32 ETH is periodically swept to the withdrawal address automatically, if you have 0x01 credentials) and full withdrawals (voluntary exit followed by withdrawal after the exit queue and a ~27-hour waiting period). If you have 0x00 BLS credentials, you must first submit a BLS-to-execution change transaction before any withdrawal is possible. Check your credential type on Beaconcha.in.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f8" id="b8">
+        <h3>Can I solo stake from home, or do I need a data centre?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f8" class="faq-content" role="region" aria-labelledby="b8">
+        <p>Home staking is fully viable and encouraged — it is the most decentralisation-preserving option. The requirements are a reliable broadband connection (fiber strongly preferred), stable power (a UPS for brief outages is recommended), and hardware that meets the minimum specs. Many validators run on consumer NUC or mini PC hardware. The EthStaker community has extensive guides specifically for home validator setups.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f9" id="b9">
+        <h3>Is solo staking better than liquid staking for yield?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f9" class="faq-content" role="region" aria-labelledby="b9">
+        <p>The net APR advantage of solo staking over liquid staking (e.g. Lido) is approximately 0.5–1% after infrastructure costs — meaningful over time but not dramatic. Solo staking is better for decentralisation contribution and full self-custody. Liquid staking is better for users without 32 ETH, those who prefer zero operational overhead, and those who want liquidity. The choice should be made on the basis of the decentralisation contribution, not marginal yield.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="container" role="contentinfo" style="padding:2rem 0;border-top:1px solid var(--line);margin-top:2rem">
+  <p class="muted">© 2026 Solo Staking Guide. Educational content with safety-first operational focus. Not financial or investment advice.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      const body = document.getElementById(btn.getAttribute('aria-controls'));
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.querySelector('.faq-plus').textContent = open ? '+' : '−';
+      body.style.maxHeight = open ? '0' : body.scrollHeight + 'px';
+      body.classList.toggle('open', !open);
+    });
+  });
+</script>
+
+</body>
+</html>
